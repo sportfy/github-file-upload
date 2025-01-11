@@ -11,7 +11,6 @@ function canvasToImageFile(select, originFile, ratio) {
             resolve(genFileObj.size < originFile.size ? genFileObj : originFile)
         }, originFile.type, ratio); // 属于压缩关键第二部分
     })
-    
 }
 // 判断是否为图片
 function isImageFile(file) {
@@ -20,7 +19,7 @@ function isImageFile(file) {
 }
 function ImgFileCheckCompression(originFile) {
     return new Promise((resolve, reject) => {
-        let compressionConfig = JSON.parse(localStorage.getItem("config")).compression_config;
+        let compressionConfig = JSON.parse(localStorage.getItem("config"))?.compression_config;
         if (compressionConfig == null || compressionConfig.compression != 1) {
             // 如果逻辑回调返回false表示不进行压缩，则  originFile 就是压缩的对象，等于没压缩
             resolve(originFile);

@@ -50,7 +50,7 @@ let viewMap = {
         let that = this;
         navigator.clipboard.writeText(isImage ? mdImg : cdnUrl).then(function () {
             // 如果不是图片，显示下载链接复制选项
-            that.msg(`<p id='uploadSuccessTis'>② 上传成功了，请查看剪切板！ヾ(^▽^*)))</p>`, true);
+            that.msg(`<p id='uploadSuccessTis'>② 上传成功了，请查看剪切板！ヾ(^▽^*)))</p><a target="_bank" href="https://baolian.publicvm.com/">φ(≧ω≦*)♪推广: 宝连机场-高性价比/速度快/稳定/低延迟/退款保障</a>`, true);
             transitionChangeTitle("success", 1000);
             if (!isImage) {
                 that.appendResourceUrl(initUrl,cdnUrl);
