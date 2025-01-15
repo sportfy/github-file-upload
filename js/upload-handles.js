@@ -50,13 +50,14 @@ let viewMap = {
         let that = this;
         navigator.clipboard.writeText(isImage ? mdImg : cdnUrl).then(function () {
             // 如果不是图片，显示下载链接复制选项
-            that.msg(`<p id='uploadSuccessTis'>② 上传成功了，请查看剪切板！ヾ(^▽^*)))</p><a target="_bank" href="https://baolian.publicvm.com/">φ(≧ω≦*)♪推广: 宝连机场-高性价比/速度快/稳定/低延迟/退款保障</a>`, true);
+            that.msg(`<p id='uploadSuccessTis'>② 上传成功了，请查看剪切板！ヾ(^▽^*)))</p>`, true);
             transitionChangeTitle("success", 1000);
             if (!isImage) {
                 that.appendResourceUrl(initUrl,cdnUrl);
             } else {
                 // 图片回显
-                that.placeResource(`<img src="${cdnUrl}" />`) 
+                that.msg(`<a target="_bank" href="https://baolian.publicvm.com/" style="opacity: 0.9;">((*・∀・）ゞ♪推广: 宝连机场-高性价比/速度快/稳定/低延迟/退款保障</a>`,true)
+                that.placeResource(`<img src="${cdnUrl}" />`)
             }
         }, function () {
             // 用户离开的页面导致复制失败，显示手动复制
@@ -106,11 +107,7 @@ function fileDataProcessing(file) {
             resolve(file.getAsFile());
         }
         // 统一为File
-        if (!(file instanceof File) || file.size <= 0) {
-            resolve(null)
-        } else {
-            resolve(file)
-        }
+        resolve((file instanceof File) ? file : null)
     })
 }
 // 图片文件生成以时间缀为文件名，原后缀为后缀的fullFileName

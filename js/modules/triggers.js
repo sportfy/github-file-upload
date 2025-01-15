@@ -14,8 +14,13 @@ function targetFromEvent(e) {
 // 文件挂载-上传统一处理器
 let resourceOperator = {
   resource: null,
-  show(file, isNowUpload = false, getPreUrl) {
-    debugger
+  showAndUpload(files, isNowUpload = true, getPreUrl) {
+    if(files == null || files.length == 0) return;
+    if(files.length > 1) {
+      alert("暂不支持多文件上传，请重新选择你的文件~");
+      return;
+    }
+    let file = files[0];
     if (file == null || Array.isArray(file)) return;
     // 数据挂载
     this.resource = file;
@@ -44,27 +49,24 @@ let resourceOperator = {
     let result = [];
     for (let i = 0; i < items.length; i++) {
       let item = items[i];
-      if (item != null && ( /file/.test(item.kind) || /image/.test(item.type)) ) {
-        result.push(item)
-      }
+      if (item != null) result.push(item);
     }
     return result;
   }
 }
 // 【选择上传】
-$('#myFile').on('input', (e) => resourceOperator.show(targetFromEvent(e).files[0]))
+$('#myFile').on('input', (e) => resourceOperator.showAndUpload(targetFromEvent(e).files))
 // 点击图片进行上传时触发
-$("#img_pre_show").on('click', () => resourceOperator.upload())
+// $("#img_pre_show").on('click', () => resourceOperator.upload())
 
 // 【粘贴上传】
 document.addEventListener('paste', function (e) {
   const clipboardData = (e.clipboardData || window.clipboardData);
   const items = clipboardData.items || clipboardData.files || [];
   let files = resourceOperator.filterNotUploadable(items);
-  let targetFile = (files != null && files.length > 0) ? files[0] : null;
-  if (targetFile == null) return;
-  resourceOperator.show(targetFile, true, (resolve, reject) => {
+  resourceOperator.showAndUpload(files, true, (resolve, reject) => {
     // 将剪贴板项作为Blob提取出来
+    const targetFile = files[0];
     const imageFile = targetFile.getAsFile ? targetFile.getAsFile() : targetFile;
     // 使用 FileReader 读取图片文件并显示到页面上
     const reader = new FileReader();
@@ -85,11 +87,8 @@ $("#choose_img")[0].addEventListener("drop", function (e) {
   e.preventDefault();
   e.stopPropagation();
   var df = e.dataTransfer;
-  debugger
   let files = resourceOperator.filterNotUploadable(df.files);
-  let targetFile = (files != null && files.length > 0) ? files[0] : null;
-  if (targetFile == null) return;
-  resourceOperator.show(targetFile, true)
+  resourceOperator.showAndUpload(files, true)
 }, false)
 
 // // 【第四种-开发中】触发: 粘贴资源URL动作
